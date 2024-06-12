@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>ویرایش محصول: {{ product.name }}</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ product_update_form.as_p }}
+        {{ inventory_form.management_form }}
+        <h3>موجودی در انبارها</h3>
+        {% for form in inventory_form %}
+            {{ form.as_p }}
+        {% endfor %}
+        <input type="submit" value="ذخیره تغییرات">
+    </form>
+    <a href="{% url 'product:product_detail' product.id %}">لغو</a>
+{% endblock %}

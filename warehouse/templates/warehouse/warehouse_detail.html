@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <h1>اطلاعات انبار</h1>
+    <a href="{% url "warehouse:update_warehouse" warehouse.id %}">ویرایش انبار</a>
+    <a href="{% url "warehouse:delete_warehouse" warehouse.id %}">حذف</a>
+    <p><strong>شعبه:</strong> {{ warehouse.branch }}</p>
+    <p><strong>آدرس:</strong> {{ warehouse.location }}</p>
+    <h3>شماره تلفن‌ها</h3>
+    <ul>
+        {% for phone_number in phone_numbers %}
+            <li>{{ phone_number.phone_number }}</li>
+        {% empty %}
+            <li>شماره تلفنی ثبت نشده است.</li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <p><strong>زمان ثبت اطلاعات:</strong> {{ warehouse.get_jalali_created }}</p>
+    <p><strong>زمان آخرین بروزرسانی اطلاعات:</strong> {{ warehouse.get_jalali_updated }}</p>
+{% endblock %}

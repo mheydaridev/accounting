@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>ویرایش مشتری: {{ customer.name }}</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ customer_update_form.as_p }}
+        {{ phone_numbers_form.management_form }}
+        <h3>شماره تلفن‌ها</h3>
+        {% for form in phone_numbers_form %}
+            {{ form.as_p }}
+        {% endfor %}
+        <input type="submit" value="ذخیره تغییرات">
+    </form>
+    <a href="{% url 'customer:customer_detail' customer.id %}">لغو</a>
+{% endblock %}

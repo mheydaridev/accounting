@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>لیست مشتریان</h1>
+    <a href="{% url 'customer:add_customer' %}">اضافه کردن مشتری جدید</a>
+    <ul>
+        {% for customer in customers %}
+            <li>
+                <a href="{% url 'customer:customer_detail' customer.id %}">{{ customer.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>اضافه کردن انبار جدید</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ warehouse_add_form.as_p }}
+        <input type="submit" value="اضافه کردن">
+    </form>
+    <a href="{% url 'warehouse:warehouse_list' %}">لغو</a>
+{% endblock %}

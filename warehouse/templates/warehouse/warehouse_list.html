@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>لیست انبارها</h1>
+    <a href="{% url 'warehouse:add_warehouse' %}">اضافه کردن انبار جدید</a>
+    <ul>
+        {% for warehouse in warehouses %}
+            <li>
+                <a href="{% url 'warehouse:warehouse_detail' warehouse.id %}">{{ warehouse.branch }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

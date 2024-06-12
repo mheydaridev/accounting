@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>لیست تأمین کنندگان</h1>
+    <a href="{% url 'supplier:add_supplier' %}">اضافه کردن تأمین کننده جدید</a>
+    <ul>
+        {% for supplier in suppliers %}
+            <li>
+                <a href="{% url 'supplier:supplier_detail' supplier.id %}">{{ supplier.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

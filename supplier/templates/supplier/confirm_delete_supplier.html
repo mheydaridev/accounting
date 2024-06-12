@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>آیا مطمئن هستید که می‌خواهید تأمین کننده "{{ supplier.name }}" را حذف کنید؟</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="submit" value="بله، حذف شود"></input>
+    </form>
+    <a href="{% url 'supplier:supplier_detail' supplier.id %}">لغو</a>
+{% endblock %}

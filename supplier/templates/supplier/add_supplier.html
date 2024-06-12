@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>اضافه کردن تأمین کننده جدید</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ supplier_add_form.as_p }}
+        <input type="submit" value="اضافه کردن">
+    </form>
+    <a href="{% url 'supplier:supplier_list' %}">لغو</a>
+{% endblock %}

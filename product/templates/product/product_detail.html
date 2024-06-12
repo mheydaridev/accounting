@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <h1>اطلاعات محصول</h1>
+    <a href="{% url "product:update_product" product.id %}">ویرایش محصول</a>
+    <a href="{% url "product:delete_product" product.id %}">حذف</a>
+    <p><strong>نام:</strong> {{ product.name }}</p>
+    <p><strong>قیمت:</strong> {{ product.price }} تومان</p>
+    <h3>موجودی در انبارها</h3>
+    <table>
+        <tr>
+            <th>انبار</th>
+            <th>موجودی</th>
+        </tr>
+        {% for item in inventory %}
+            <tr>
+                <td>{{ item.warehouse.branch }}</td>
+                <td>{{ item.quantity }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <hr>
+    <p><strong>زمان ثبت اطلاعات:</strong> {{ product.get_jalali_created }}</p>
+    <p><strong>زمان آخرین بروزرسانی اطلاعات:</strong> {{ product.get_jalali_updated }}</p>
+{% endblock %}

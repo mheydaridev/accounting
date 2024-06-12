@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پول‌یار - نرم افزار حسابداری</title>
+    <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+</head>
+<body>
+    {% comment %} {% if request.user.is_authenticated %}
+        <a href="{% url "accounts:user_logout" %}"></a>
+        
+    {% else %}
+        <a href="{% url "accounts:user_register" %}"></a>
+        <a href="{% url "accounts:user_login" %}"></a>
+    {% endif %}
+    {% include "sidebar.html" %} {% endcomment %}
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

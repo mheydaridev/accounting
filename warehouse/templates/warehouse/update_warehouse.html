@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>ویرایش انبار: {{ warehouse.branch }}</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ warehouse_update_form.as_p }}
+        {{ phone_numbers_form.management_form }}
+        <h3>شماره تلفن‌ها</h3>
+        {% for form in phone_numbers_form %}
+            {{ form.as_p }}
+        {% endfor %}
+        <input type="submit" value="ذخیره تغییرات">
+    </form>
+    <a href="{% url 'warehouse:warehouse_detail' warehouse.id %}">لغو</a>
+{% endblock %}
