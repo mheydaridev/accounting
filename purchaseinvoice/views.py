@@ -80,6 +80,7 @@ def update_purchase_invoice(request, purchase_invoice_id):
                         unit_price=unit_price,
                         value_added=value_added
                     )
+            messages.success(request, 'فاکتور با موفقیت بروزرسانی شد.', 'success')
             return redirect('purchase_invoice:purchase_invoice_detail', purchase_invoice_id)
     else:
         purchase_invoice_form = PurchaseInvoiceForm(instance=purchase_invoice)
