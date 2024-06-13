@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ویرایش فاکتور خرید</title>
+</head>
+<body>
+    <h1>ویرایش فاکتور خرید</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Purchase Invoice Form -->
+        <fieldset>
+            <legend>اطلاعات فاکتور خرید</legend>
+            {{ purchase_invoice_form.as_p }}
+        </fieldset>
+
+        <!-- Invoice Items -->
+        <fieldset>
+            <legend>اقلام فاکتور</legend>
+            <div id="invoice-items">
+                {% for item_form in item_forms %}
+                    <div class="invoice-item">
+                        <input type="hidden" name="item_id" value="{{ item_form.instance.id }}">
+                        {{ item_form.as_p }}
+                        <button type="button" class="remove-item-btn">حذف</button>
+                        <hr>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" id="add-item-btn">افزودن قلم</button>
+        </fieldset>
+
+        <!-- Submit Button -->
+        <button type="submit">به‌روزرسانی فاکتور خرید</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let addItemBtn = document.getElementById('add-item-btn');
+            let invoiceItemsDiv = document.getElementById('invoice-items');
+
+            addItemBtn.addEventListener('click', function() {
+                // Create a new div for the invoice item
+                let newItemDiv = document.createElement('div');
+                newItemDiv.classList.add('invoice-item');
+
+                // Add the HTML for the item fields
+                newItemDiv.innerHTML = `
+                    <input type="hidden" name="item_id" value="">
+                    <label for="product">محصول:</label>
+                    <input type="text" name="product" required><br>
+                    <label for="quantity">تعداد:</label>
+                    <input type="number" name="quantity" required><br>
+                    <label for="unit_price">قیمت واحد:</label>
+                    <input type="number" name="unit_price" required><br>
+                    <label for="value_added">ارزش افزوده:</label>
+                    <input type="number" name="value_added" required><br>
+                    <button type="button" class="remove-item-btn">حذف</button>
+                    <hr>
+                `;
+
+                // Append the new item div to the invoice items div
+                invoiceItemsDiv.appendChild(newItemDiv);
+
+                // Add event listener for the remove button
+                newItemDiv.querySelector('.remove-item-btn').addEventListener('click', function() {
+                    invoiceItemsDiv.removeChild(newItemDiv);
+                });
+            });
+
+            // Add remove functionality to existing items
+            document.querySelectorAll('.remove-item-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    let itemDiv = btn.closest('.invoice-item');
+                    invoiceItemsDiv.removeChild(itemDiv);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

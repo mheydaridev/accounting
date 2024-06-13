@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>حذف فاکتور خرید</title>
+</head>
+<body>
+    <h1>حذف فاکتور خرید</h1>
+    <p>آیا مطمئن هستید که می‌خواهید فاکتور خرید زیر را حذف کنید؟</p>
+    
+    <!-- Purchase Invoice Details -->
+    <div>
+        <strong>شماره فاکتور:</strong> {{ purchase_invoice.id }}<br>
+        <strong>تاریخ:</strong> {{ purchase_invoice.date }}<br>
+        <strong>مبلغ کل:</strong> {{ purchase_invoice.total_amount }}<br>
+        <!-- Add more details as needed -->
+    </div>
+
+    <!-- Confirmation Form -->
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">بله، حذف کن</button>
+        <a href="{% url 'purchase_invoice:purchase_invoice_list' %}">لغو</a>
+    </form>
+</body>
+</html>

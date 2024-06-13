@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>افزودن فاکتور خرید</title>
+</head>
+<body>
+    <h1>افزودن فاکتور خرید</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Purchase Invoice Form -->
+        <fieldset>
+            <legend>اطلاعات فاکتور خرید</legend>
+            {{ purchase_invoice_form.as_p }}
+        </fieldset>
+
+        <!-- Invoice Items -->
+        <fieldset>
+            <legend>اقلام فاکتور</legend>
+            <div id="invoice-items">
+                <!-- This will be filled with JavaScript -->
+            </div>
+            <button type="button" id="add-item-btn">افزودن قلم</button>
+        </fieldset>
+
+        <!-- Submit Button -->
+        <button type="submit">ثبت فاکتور خرید</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let addItemBtn = document.getElementById('add-item-btn');
+            let invoiceItemsDiv = document.getElementById('invoice-items');
+
+            addItemBtn.addEventListener('click', function() {
+                // Create a new div for the invoice item
+                let newItemDiv = document.createElement('div');
+                newItemDiv.classList.add('invoice-item');
+
+                // Add the HTML for the item fields
+                newItemDiv.innerHTML = `
+                    <label for="product">محصول:</label>
+                    <input type="text" name="products[][product]" required><br>
+                    <label for="quantity">تعداد:</label>
+                    <input type="number" name="products[][quantity]" required><br>
+                    <label for="unit_price">قیمت واحد:</label>
+                    <input type="number" name="products[][unit_price]" required><br>
+                    <label for="value_added">ارزش افزوده:</label>
+                    <input type="number" name="products[][value_added]" required><br>
+                    <button type="button" class="remove-item-btn">حذف</button>
+                    <hr>
+                `;
+
+                // Append the new item div to the invoice items div
+                invoiceItemsDiv.appendChild(newItemDiv);
+
+                // Add event listener for the remove button
+                newItemDiv.querySelector('.remove-item-btn').addEventListener('click', function() {
+                    invoiceItemsDiv.removeChild(newItemDiv);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
