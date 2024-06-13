@@ -19,15 +19,15 @@ class PurchaseInvoice(models.Model):
         verbose_name_plural = 'فاکتورهای خرید'
         
     def __str__(self):
-        return str(self.get_jalali_invoice_date)
+        return f'فاکتور {self.id}'
     
     def invoice_total_price(self):
         invoice_items = InvoiceItem.objects.filter(purchase_invoice=self.id)
         invoice_total_price = 0
         for invoice_item in invoice_items:
             invoice_total_price += invoice_item.product_total_price()
-        return invoice_total_price
-    invoice_total_price.short_decription = 'قیمت کل فاکتور'
+        return f'{invoice_total_price} تومان'
+    invoice_total_price.short_description = 'قیمت کل فاکتور'
     
     def get_jalali_invoice_date(self):
         return jalali_converter_date(self.invoice_date)
@@ -54,7 +54,7 @@ class InvoiceItem(models.Model):
     purchase_invoice = models.ForeignKey(PurchaseInvoice, on_delete=models.CASCADE, verbose_name='فاکتور خرید')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='purchase_invoice_items', verbose_name='محصول')
     quantity = models.PositiveIntegerField(default=1, verbose_name='تعداد')
-    unit_price = models.DecimalField(max_digits=12, decimal_places=0, verbose_name='قیمت محصول')
+    unit_price = models.DecimalField(blank=True, null=True, max_digits=12, decimal_places=0, verbose_name='قیمت محصول')
     value_added = models.PositiveIntegerField(blank=True, null=True,verbose_name='درصد ارزش افزوده محصول')
 
     class Meta:
@@ -69,7 +69,7 @@ class InvoiceItem(models.Model):
         return self.product.name
     get_product_name.short_description = 'نام محصول'
     
-    def save(self, *args, **kwargs):    
+    def save(self, *args, **kwargs):
         # Upadate product price
         unit_price = self.unit_price
         total_value_added = self.purchase_invoice.value_added

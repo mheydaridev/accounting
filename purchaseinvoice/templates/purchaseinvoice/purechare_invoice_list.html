@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>لیست انبارها</h1>
+    <a href="{% url 'purchase_invoice:add_purchase_invoice' %}">اضافه کردن فاکتور جدید</a>
+    <ul>
+        {% for purchase_invoice in purchase_invoices %}
+            <li>
+                <a href="{% url 'purchase_invoice:purchase_invoice_detail' purchase_invoice.id %}">فاکتور {{ purchase_invoice.id }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

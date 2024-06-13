@@ -20,15 +20,15 @@ class SalesInvoice(models.Model):
         verbose_name_plural = 'فاکتورهای فروش'
 
     def __str__(self):
-        return str(self.get_jalali_invoice_date)
+        return f'فاکتور {self.id}'
     
     def invoice_total_price(self):
         invoice_items = InvoiceItem.objects.filter(sales_invoice=self.id)
         invoice_total_price = 0
         for invoice_item in invoice_items:
             invoice_total_price += invoice_item.product_total_price()
-        return invoice_total_price
-    invoice_total_price.short_decription = 'قیمت کل فاکتور'
+        return f'{invoice_total_price} تومان'
+    invoice_total_price.short_description = 'قیمت کل فاکتور'
     
     def get_jalali_invoice_date(self):
         return jalali_converter_date(self.invoice_date)
@@ -54,7 +54,7 @@ class InvoiceItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='sales_invoice_items', verbose_name='محصول')
     sales_invoice = models.ForeignKey(SalesInvoice, on_delete=models.CASCADE, verbose_name='فاکتور فروش')
     quantity = models.PositiveIntegerField(default=1, verbose_name='تعداد')
-    unit_price = models.DecimalField(max_digits=12, decimal_places=0, verbose_name='قیمت محصول')
+    unit_price = models.DecimalField(blank=True, null=True, max_digits=12, decimal_places=0, verbose_name='قیمت محصول')
     discount = models.PositiveIntegerField(blank=True, null=True, verbose_name='درصد تخفیف محصول')
     
     class Meta:
@@ -64,7 +64,7 @@ class InvoiceItem(models.Model):
     def get_product_price(self):
         return self.product.price
     get_product_price.short_decription = 'قیمت محصول'
-    
+
     def product_total_price(self):
         if self.discount:
             return self.quantity * self.unit_price * (Decimal(1) - self.discount / Decimal(100))
