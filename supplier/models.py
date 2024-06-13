@@ -1,5 +1,5 @@
 from django.db import models
-from shared.utils import jalali_converter
+from shared.utils import jalali_converter_date_time
 from shared.validators import validate_numeric
 
 # Create your models here.
@@ -18,11 +18,11 @@ class Supplier(models.Model):
         return self.name
     
     def get_jalali_created(self):
-        return jalali_converter(self.created)
+        return jalali_converter_date_time(self.created)
     get_jalali_created.short_description = 'زمان ثبت اطلاعات'
 
     def get_jalali_updated(self):
-        return jalali_converter(self.updated)
+        return jalali_converter_date_time(self.updated)
     get_jalali_updated.short_description = 'زمان آخرین بروزرسانی اطلاعات'
     
 

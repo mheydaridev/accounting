@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h2>اطلاعات شرکت</h2>
+    <a href="{% url "accounts:update_company" company.id %}">ویرایش اطلاعات شرکت</a>
+    <a href="{% url "accounts:delete_account" company.id %}">حذف حساب کاربری</a>
+    <a href="{% url "accounts:logout" company.id %}">خروج از حساب کاربری</a>
+    <p><strong>نام شرکت:</strong> {{ company.name }}</p>
+    <p><strong>دسته بندی کسب و کار:</strong> {{ company.category }}</p>
+    <p><strong>نام کاربری صاحب شرکت:</strong> {{ company.get_user_username }}</p>
+    <p><strong>ایمیل صاحب شرکت:</strong> {{ company.get_user_email }}</p>
+    <p><strong>شماره تلفن:</strong> {{ company.phone_number }}</p>
+    <hr>
+    <p><strong>زمان ثبت اطلاعات:</strong> {{ company.created }}</p>
+    <p><strong>زمان آخرین بروزرسانی اطلاعات:</strong> {{ company.updated }}</p>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>حذف حساب کاربری</h2>
+    <p>آیا مطمئن هستید که می‌خواهید حساب کاربری خود را حذف کنید؟ این عمل غیرقابل بازگشت است.</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="حذف حساب کاربری"></input>
+    </form>
+    <a href="{% url 'accounts:profile' company.id %}">لغو</a>
+{% endblock %}

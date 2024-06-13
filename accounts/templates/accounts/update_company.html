@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>ویرایش اطلاعات شرکت</h2>
+    <a href="{% url "accounts:delete_account" %}">تغییر رمز عبور</a>
+    <form method="post">
+        {% csrf_token %}
+        {{ company_update_form.as_p }}
+        <input type="submit" value="ذخیره تغییرات">
+    </form>
+    <a href="{% url 'accounts:profile' company.id %}">لغو</a>
+{% endblock %}

@@ -2,14 +2,16 @@ from django.db import models
 from warehouse.models import Warehouse
 from customer.models import Customer
 from product.models import Product, Inventory
-from shared.utils import jalali_converter
+from shared.utils import jalali_converter_date_time, jalali_converter_date
 from django.core.exceptions import ValidationError
+from decimal import Decimal
 
 # Create your models here.
 class SalesInvoice(models.Model):
     warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, verbose_name='انبار')
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name='مشتری')
     invoice_date = models.DateField(verbose_name='تاریخ فاکتور')
+    discount = models.PositiveIntegerField(blank=True, null=True, verbose_name='درصد تخفیف فاکتور')
     created = models.DateTimeField(auto_now_add=True, verbose_name='زمان ثبت اطلاعات')
     updated = models.DateTimeField(auto_now=True, verbose_name='زمان آخرین بروزرسانی اطلاعات')
     
@@ -21,23 +23,23 @@ class SalesInvoice(models.Model):
         return str(self.get_jalali_invoice_date)
     
     def invoice_total_price(self):
-        invoice_item = InvoiceItem.objects.filter(sales_invoice=self.id)
+        invoice_items = InvoiceItem.objects.filter(sales_invoice=self.id)
         invoice_total_price = 0
-        for product_total_price in invoice_item.product_total_price:
-            invoice_total_price += product_total_price
+        for invoice_item in invoice_items:
+            invoice_total_price += invoice_item.product_total_price()
         return invoice_total_price
     invoice_total_price.short_decription = 'قیمت کل فاکتور'
     
     def get_jalali_invoice_date(self):
-        return jalali_converter(self.invoice_date)
+        return jalali_converter_date(self.invoice_date)
     get_jalali_invoice_date.short_description = 'تاریخ فاکتور'
         
     def get_jalali_created(self):
-        return jalali_converter(self.created)
+        return jalali_converter_date_time(self.created)
     get_jalali_created.short_description = 'زمان ثبت اطلاعات'
 
     def get_jalali_updated(self):
-        return jalali_converter(self.updated)
+        return jalali_converter_date_time(self.updated)
     get_jalali_updated.short_description = 'زمان آخرین بروزرسانی اطلاعات'
     
     def get_customer_name(self):
@@ -53,7 +55,7 @@ class InvoiceItem(models.Model):
     sales_invoice = models.ForeignKey(SalesInvoice, on_delete=models.CASCADE, verbose_name='فاکتور فروش')
     quantity = models.PositiveIntegerField(default=1, verbose_name='تعداد')
     unit_price = models.DecimalField(max_digits=12, decimal_places=0, verbose_name='قیمت محصول')
-    discount = models.PositiveIntegerField(blank=True, null=True, verbose_name='درصد تخفیف')
+    discount = models.PositiveIntegerField(blank=True, null=True, verbose_name='درصد تخفیف محصول')
     
     class Meta:
         verbose_name = 'آیتم فاکتور'
@@ -65,7 +67,7 @@ class InvoiceItem(models.Model):
     
     def product_total_price(self):
         if self.discount:
-            return self.quantity * self.unit_price * (1 - self.discount / 100)
+            return self.quantity * self.unit_price * (Decimal(1) - self.discount / Decimal(100))
         else:
             return self.quantity * self.unit_price
     product_total_price.short_decription = 'جمع قیمت محصول'

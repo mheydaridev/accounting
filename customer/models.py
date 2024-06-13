@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from shared.validators import validate_numeric
-from shared.utils import jalali_converter
+from shared.utils import jalali_converter_date_time, jalali_converter_date
 
 # Create your models here.
 class Customer(models.Model):
@@ -19,20 +19,20 @@ class Customer(models.Model):
         return self.name
     
     def get_jalali_birth_date(self):
-        return jalali_converter(self.birth_date)
+        return jalali_converter_date(self.birth_date)
     get_jalali_birth_date.short_description = 'تاریخ تولد'
     
     def get_jalali_created(self):
-        return jalali_converter(self.created)
+        return jalali_converter_date_time(self.created)
     get_jalali_created.short_description = 'زمان ثبت اطلاعات'
 
     def get_jalali_updated(self):
-        return jalali_converter(self.updated)
+        return jalali_converter_date_time(self.updated)
     get_jalali_updated.short_description = 'زمان آخرین بروزرسانی اطلاعات'
 
     
 class PhoneNumber(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='phone_numbers', verbose_name='مشتری')
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name='مشتری')
     phone_number = models.CharField(max_length=11, unique=True, blank=True, null=True, validators=[validate_numeric], verbose_name='شماره تلفن')
     
     class Meta:

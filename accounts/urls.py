@@ -1,11 +1,14 @@
-# from django.urls import path
-# from .views import user_register, user_login, user_detail, update_user, user_logout
+from django.urls import path
+from .views import company_register, company_register_information, login, profile, update_company, change_password, logout, delete_account
 
-# app_name = 'accounts'
-# urlpatterns = [
-#     path('user_register/', user_register, name='user_register'),
-#     path('user_login/', user_login, name='user_login'),
-#     path('', user_detail, name='user_detail'),
-#     path('update_user/', update_user, name='update_user'),
-#     path('user_logout/', user_logout, name='user_logout'),
-# ]
+app_name = 'accounts'
+urlpatterns = [
+    path('register/company/', company_register, name='company_register'),
+    path('register/company_information/', company_register_information, name='company_register_information'),
+    path('login/', login, name='login'),
+    path('profile/<int:company_id>/', profile, name='company_detail'),
+    path('update_company/<int:company_id>/', update_company, name='update_company'),
+    path('password/change/', change_password, name='change_password'),
+    path('logout/<int:company_id>/', logout, name='logout'),
+    path('delete_account/<int:company_id>/', delete_account, name='delete_account')
+]

@@ -1,38 +1,45 @@
-# from django import forms
-# from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-# from .models import CustomUser
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from .models import Company
+
+class UserRegisterForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = 'نام کاربری'
+        self.fields['password1'].label = 'رمز عبور'
+        self.fields['password2'].label = 'تکرار رمز عبور'
 
 
-# class CustomUserRegisterForm(UserCreationForm):
-#     password = forms.CharField(
-#         label='رمز',
-#         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-#     )
-#     confirm_password = forms.CharField(
-#         label='تائید رمز',
-#         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-#     )
+class CompanyRegisterForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
     
-#     class Meta(UserCreationForm.Meta):
-#         model = CustomUser
-#         fields = UserCreationForm.Meta.fields + ('phone_number',)
-    
-#     def clean_password2(self):
-#         password = self.cleaned_data.get('password')
-#         confirm_password = self.cleaned_data.get('confirm_password')
-
-#         if password and confirm_password and password != confirm_password:
-#             raise forms.ValidationError("رمز و تکرار آن با هم برابر نیستند.")
-
-#         return password
+    class Meta:
+        model = Company
+        fields = ['name', 'category', 'phone_number', 'email']
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].label = 'نام شرکت'
+        self.fields['category'].label = 'دسته بندی کسب و کار'
+        self.fields['phone_number'].label = 'شماره تلفن'
+        self.fields['email'].label = 'ایمیل'
 
 
-# class CustomUserUpdateForm(UserChangeForm):
-#     class Meta:
-#         model = CustomUser
-#         fields = UserChangeForm.Meta.fields
+class CompanyUpdateForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
 
+    class Meta:
+        model = Company
+        fields = ['name', 'category', 'email', 'phone_number']
 
-# class CustomUserLoginForm(forms.Form):
-#     username = forms.CharField(max_length=254, widget=forms.TextInput(attrs={'class': 'form-control'}))
-#     password = forms.CharField(max_length=32, min_length=8, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].label = 'نام شرکت'
+        self.fields['category'].label = 'دسته بندی کسب و کار'
+        self.fields['email'].label = 'ایمیل'
+        self.fields['phone_number'].label = 'شماره تلفن'

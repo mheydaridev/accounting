@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h2>ورود به سیستم</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ authentication_form.as_p }}
+        <input type="submit" value="ورود"></input>
+    </form>
+{% endblock %}
